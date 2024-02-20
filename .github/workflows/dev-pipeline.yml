@@ -1,0 +1,76 @@
+name: 'Terraform GitHub Actions'
+on:
+  # push:
+  #   branches:
+  #     - 'main'
+  # pull_request:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Setup Terraform'
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.7.3
+
+      - name: 'Terraform Init'
+        run: terraform init
+
+      - name: 'Terraform Validate'
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        run: terraform plan -input=false 
+
+      - name: Terraform Plan Status
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
+      - name: 'Terraform Apply'
+        # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve -no-color
+
+#----------------------------------------------------------------------------------------------------------------
+# Runs apply job after chagnges has been approved
+#----------------------------------------------------------------------------------------------------------------   
+# ---
+# name: 'Terraform Apply'
+# on:
+#   workflow_run:
+#     workflows: ["Terraform Plan"]
+#     types:
+#       - completed
+
+# jobs:
+#   terraform:
+#     name: 'Terraform Apply'
+#     runs-on: ubuntu-latest
+#     environment: 'production'
+#     steps:
+#       - name: 'Checkout'
+#         uses: actions/checkout@v2
+
+#       - name: 'Setup Terraform'
+#         uses: hashicorp/setup-terraform@v1
+#         with:
+#           terraform_version: 0.14.0
+
+#       - name: 'Terraform Init'
+#         run: terraform init
+
+#       - name: 'Terraform Apply'
+#         run: terraform apply "plan.out"
+
+
