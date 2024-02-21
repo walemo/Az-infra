@@ -23,6 +23,9 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v3
+
       - name: 'Az CLI login'
         uses: azure/login@v1
         with:
@@ -36,9 +39,6 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
-
-      - name: 'Checkout'
-        uses: actions/checkout@v3
 
       # - name: 'Login via Azure CLI'
       #   uses: azure/login@v1
