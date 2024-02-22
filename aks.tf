@@ -17,18 +17,26 @@ locals {
 }
 
 resource "azurerm_virtual_network" "aks_network" {
-  address_space       = ["10.52.0.0/16"]
+  address_space       = ["10.0.0.0/16"]
   location            = local.resource_group.location
   name                = "${random_id.prefix.hex}-vn"
   resource_group_name = local.resource_group.name
+
+  depends_on = [
+    azurerm_resource_group.main
+  ]
 }
 
-resource "azurerm_subnet" "test" {
-  address_prefixes                               = ["10.52.0.0/23"]
+resource "azurerm_subnet" "aks_subnet" {
+  address_prefixes                               = ["10.0.10.0/23"]
   name                                           = "${random_id.prefix.hex}-sn"
   resource_group_name                            = local.resource_group.name
   virtual_network_name                           = azurerm_virtual_network.aks_network.name
   enforce_private_link_endpoint_network_policies = true
+
+  depends_on = [
+    azurerm_resource_group.main
+  ]
 }
 
 locals {
@@ -52,6 +60,10 @@ module "aks" {
   # public_network_access_enabled = false
   sku_tier                      = "Standard"
   rbac_aad                      = false
-  vnet_subnet_id                = azurerm_subnet.test.id
+  vnet_subnet_id                = azurerm_subnet.aks_subnet.id
   node_pools                    = local.nodes
+
+  depends_on = [
+    azurerm_resource_group.main
+  ]
 }
