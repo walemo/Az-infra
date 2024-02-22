@@ -5,7 +5,7 @@ variable "create_resource_group" {
 }
 
 variable "location" {
-  default = "centralcanada"
+  default = "canadacentral"
 }
 
 variable "resource_group_name" {

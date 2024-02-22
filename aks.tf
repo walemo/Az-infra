@@ -16,7 +16,7 @@ locals {
   }
 }
 
-resource "azurerm_virtual_network" "test" {
+resource "azurerm_virtual_network" "aks_network" {
   address_space       = ["10.52.0.0/16"]
   location            = local.resource_group.location
   name                = "${random_id.prefix.hex}-vn"
@@ -27,7 +27,7 @@ resource "azurerm_subnet" "test" {
   address_prefixes                               = ["10.52.0.0/23"]
   name                                           = "${random_id.prefix.hex}-sn"
   resource_group_name                            = local.resource_group.name
-  virtual_network_name                           = azurerm_virtual_network.test.name
+  virtual_network_name                           = azurerm_virtual_network.aks_network.name
   enforce_private_link_endpoint_network_policies = true
 }
 
