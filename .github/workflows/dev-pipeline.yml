@@ -39,6 +39,11 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
+            Write-Host "##vso[task.setvariable variable=ARM_USE_OIDC]true"
+            Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN]$env:idToken"
+            Write-Host "##vso[task.setvariable variable=ARM_CLIENT_ID]$env:servicePrincipalId"
+            Write-Host "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query id -o tsv)"
+            Write-Host "##vso[task.setvariable variable=ARM_TENANT_ID]$env:tenantId"
 
       # - name: 'Login via Azure CLI'
       #   uses: azure/login@v1
