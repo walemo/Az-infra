@@ -45,7 +45,7 @@ locals {
       name           = substr("worker${i}${random_id.prefix.hex}", 0, 8)
       vm_size        = "Standard_D2s_v3"
       node_count     = 1
-      vnet_subnet_id = azurerm_subnet.test.id
+      vnet_subnet_id = azurerm_subnet.aks_subnet.id
     }
   }
 }
