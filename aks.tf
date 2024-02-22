@@ -28,7 +28,7 @@ resource "azurerm_virtual_network" "aks_network" {
 }
 
 resource "azurerm_subnet" "aks_subnet" {
-  address_prefixes                               = ["10.0.10.0/23"]
+  address_prefixes                               = ["10.0.20.0/23"]
   name                                           = "${random_id.prefix.hex}-sn"
   resource_group_name                            = local.resource_group.name
   virtual_network_name                           = azurerm_virtual_network.aks_network.name
@@ -54,8 +54,9 @@ module "aks" {
   source = "github.com/Azure/terraform-azurerm-aks"
   # version = "7.5.0"
 
-  prefix                        = "prefix-${random_id.prefix.hex}"
+  prefix                        = "prefix" #"${random_id.prefix.hex}"
   resource_group_name           = local.resource_group.name
+  cluster_name                  = "moh-aks-cluster"
   os_disk_size_gb               = 60
   # public_network_access_enabled = false
   sku_tier                      = "Standard"
