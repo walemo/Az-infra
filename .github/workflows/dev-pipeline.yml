@@ -39,11 +39,11 @@ jobs:
           azcliversion: latest
           inlineScript: |
             az account show
-            Write-Host "##vso[task.setvariable variable=ARM_USE_OIDC]true"
-            Write-Host "##vso[task.setvariable variable=ARM_OIDC_TOKEN]$env:idToken"
-            Write-Host "##vso[task.setvariable variable=ARM_CLIENT_ID]$env:servicePrincipalId"
-            Write-Host "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query id -o tsv)"
-            Write-Host "##vso[task.setvariable variable=ARM_TENANT_ID]$env:tenantId"
+            echo "ARM_USE_OIDC=true" >> $GITHUB_ENV
+            echo "ARM_OIDC_TOKEN=${{ secrets.AZURE_ID_TOKEN }}" >> $GITHUB_ENV
+            echo "ARM_CLIENT_ID=${{ secrets.AZURE_CLIENT_ID }}" >> $GITHUB_ENV
+            echo "ARM_SUBSCRIPTION_ID=${{ secrets.AZURE_SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+            echo "ARM_TENANT_ID=${{ secrets.AZURE_TENANT_ID }}" >> $GITHUB_ENV
 
       # - name: 'Login via Azure CLI'
       #   uses: azure/login@v1
