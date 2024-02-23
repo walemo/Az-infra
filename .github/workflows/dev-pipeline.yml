@@ -61,6 +61,9 @@ jobs:
       - name: 'Terraform Validate'
         run: terraform validate -no-color
 
+      - name: 'Terraform unlock'
+        run: terraform force-unlock -force b75c25d8-76b6-58c0-8717-75dd98030cd4
+
       - name: Terraform Plan
         run: terraform plan -input=false 
 
