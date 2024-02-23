@@ -53,7 +53,7 @@ jobs:
       - name: 'Setup Terraform'
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.7.3
+          terraform_version: 1.6.0
 
       - name: 'Terraform Init'
         run: terraform init
@@ -61,8 +61,8 @@ jobs:
       - name: 'Terraform Validate'
         run: terraform validate -no-color
 
-      - name: 'Terraform unlock'
-        run: terraform force-unlock -force b75c25d8-76b6-58c0-8717-75dd98030cd4
+      # - name: 'Terraform unlock'
+      #   run: terraform force-unlock -force b75c25d8-76b6-58c0-8717-75dd98030cd4
 
       - name: Terraform Plan
         run: terraform plan -input=false 
