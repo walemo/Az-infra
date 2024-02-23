@@ -28,7 +28,7 @@ resource "azurerm_virtual_network" "aks_network" {
 }
 
 resource "azurerm_subnet" "aks_subnet" {
-  address_prefixes                               = ["10.200.8.0/22"]
+  address_prefixes                               = ["10.200.100.0/22"]
   name                                           = "${random_id.prefix.hex}-sn"
   resource_group_name                            = local.resource_group.name
   virtual_network_name                           = azurerm_virtual_network.aks_network.name
