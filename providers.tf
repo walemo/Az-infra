@@ -9,7 +9,20 @@ terraform {
       source  = "hashicorp/random"
       version = "3.3.2"
     }
+     helm = {
+      source  = "hashicorp/helm"
+      version = "~> 2.7"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = "~> 1.14.0"
+    }
   }
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "k3d-devcluster"
 }
 
 provider "azurerm" {
