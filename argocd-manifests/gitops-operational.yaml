@@ -1,0 +1,46 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  annotations:
+    deimos.io/environment-development: deploy
+  name: deimos.io
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: deimos.io
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: "*"
+      server: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: mo
+  namespace: argocd
+spec:
+  project: mo
+  source:
+    repoURL: 
+    targetRevision: HEAD
+    path: environments/preprod/apps
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+
