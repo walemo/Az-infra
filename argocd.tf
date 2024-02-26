@@ -24,32 +24,32 @@ resource "kubectl_manifest" "kubernetes_manifests" {
 #   depends_on = [module.gke_zero, module.argocd]
 }
 
-# module "argocd" {
-#   source        = "app.terraform.io/deimoscloud/argocd/deimos"
-#   version       = "1.5.0"
-#   chart_version = "5.34.3"
-#   repositories  = var.argocd_gitops_repositories
-#   config        = var.argocd_config
-#   force_update  = true
-#   manifests     = {}
-#   # manifests_directory = "./argocd-manifests"
-# #   depends_on = [module.gke_zero]
-# }
+module "argocd" {
+  source        = "DeimosCloud/argocd/kubernetes"
+  version       = "1.5.0"
+  chart_version = "5.34.3"
+  repositories  = var.argocd_gitops_repositories
+  config        = var.argocd_config
+  force_update  = true
+  manifests     = {}
+  # manifests_directory = "./argocd-manifests"
+#   depends_on = [module.gke_zero]
+}
 
 # data "kubectl_path_documents" "docs" {
 #   pattern = "./argocd-manifests/*.yaml"
 # }
 
-resource "helm_release" "argocd" {
-  name = "argocd"
+# resource "helm_release" "argocd" {
+#   name = "argocd"
 
-  repository       = "https://argoproj.github.io/argo-helm"
-  chart            = "argo-cd"
-  namespace        = "argocd"
-  repositories     = var.argocd_gitops_repositories
-  version          = "5.53.0"
-  configs          = var.argocd_config
-  create_namespace = true
+#   repository       = "https://argoproj.github.io/argo-helm"
+#   chart            = "argo-cd"
+#   namespace        = "argocd"
+#   repositories     = var.argocd_gitops_repositories
+#   version          = "5.53.0"
+#   configs          = var.argocd_config
+#   create_namespace = true
 
 
-}
+# }
