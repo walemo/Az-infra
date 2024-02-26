@@ -26,12 +26,12 @@ resource "kubectl_manifest" "kubernetes_manifests" {
 
 module "argocd" {
   source        = "DeimosCloud/argocd/kubernetes"
-  version       = "1.5.0"
+  version       = "1.1.2"
   chart_version = "5.34.3"
   repositories  = var.argocd_gitops_repositories
   config        = var.argocd_config
-  force_update  = true
-  manifests     = {}
+  # force_update  = true
+  # manifests     = {}
   # manifests_directory = "./argocd-manifests"
 #   depends_on = [module.gke_zero]
 }
