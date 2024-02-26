@@ -21,7 +21,7 @@ resource "kubectl_manifest" "kubernetes_manifests" {
   for_each  = toset(data.kubectl_path_documents.kubernetes_manifests.documents)
   yaml_body = each.value
 
-  depends_on = [module.aks, module.argocd]
+  depends_on = [module.aks, helm_release.argocd]
 }
 
 # module "argocd" {
