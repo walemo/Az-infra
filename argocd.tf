@@ -21,35 +21,33 @@ resource "kubectl_manifest" "kubernetes_manifests" {
   for_each  = toset(data.kubectl_path_documents.kubernetes_manifests.documents)
   yaml_body = each.value
 
-#   depends_on = [module.gke_zero, module.argocd]
+  depends_on = [module.aks, module.argocd]
 }
 
-module "argocd" {
-  source        = "DeimosCloud/argocd/kubernetes"
-  version       = "1.1.2"
-  chart_version = "5.34.3"
-  repositories  = var.argocd_gitops_repositories
-  config        = var.argocd_config
-  # force_update  = true
-  # manifests     = {}
-  # manifests_directory = "./argocd-manifests"
-#   depends_on = [module.gke_zero]
-}
+# module "argocd" {
+#   source        = "DeimosCloud/argocd/kubernetes"
+#   version       = "1.1.2"
+#   chart_version = "5.34.3"
+#   repositories  = var.argocd_gitops_repositories
+#   config        = var.argocd_config
+#   # force_update  = true
+#   # manifests     = {}
+#   # manifests_directory = "./argocd-manifests"
+# #   depends_on = [module.gke_zero]
+# }
 
 # data "kubectl_path_documents" "docs" {
 #   pattern = "./argocd-manifests/*.yaml"
 # }
 
-# resource "helm_release" "argocd" {
-#   name = "argocd"
+resource "helm_release" "argocd" {
+  name = "argocd"
 
-#   repository       = "https://argoproj.github.io/argo-helm"
-#   chart            = "argo-cd"
-#   namespace        = "argocd"
-#   repositories     = var.argocd_gitops_repositories
-#   version          = "5.53.0"
-#   configs          = var.argocd_config
-#   create_namespace = true
+  repository       = "https://argoproj.github.io/argo-helm"
+  chart            = "argo-cd"
+  namespace        = "argocd"
+  version          = "5.53.0"
+  create_namespace = true
 
 
-# }
+}
