@@ -28,27 +28,27 @@ resource "azurerm_virtual_network" "aks_network" {
 }
 
 resource "azurerm_subnet" "aks_subnet" {
-  address_prefixes                               = ["10.200.100.0/22"]
+  address_prefixes                               = ["10.200.0.0/22"]
   name                                           = "${random_id.prefix.hex}-sn"
   resource_group_name                            = local.resource_group.name
   virtual_network_name                           = azurerm_virtual_network.aks_network.name
-  enforce_private_link_endpoint_network_policies = true
+  private_endpoint_network_policies_enabled      = true
 
   depends_on = [
     azurerm_resource_group.main
   ]
 }
 
-locals {
-  nodes = {
-    for i in range(1) : "worker${i}" => {
-      name           = substr("worker${i}${random_id.prefix.hex}", 0, 8)
-      vm_size        = "Standard_D2s_v3"
-      node_count     = 1
-      vnet_subnet_id = azurerm_subnet.aks_subnet.id
-    }
-  }
-}
+# locals {
+#   nodes = {
+#     for i in range(1) : "worker${i}" => {
+#       name           = substr("worker${i}${random_id.prefix.hex}", 0, 8)
+#       vm_size        = "Standard_D2s_v3"
+#       node_count     = 1
+#       vnet_subnet_id = azurerm_subnet.aks_subnet.id
+#     }
+#   }
+# }
 
 module "aks" {
   source = "github.com/Azure/terraform-azurerm-aks"
@@ -57,12 +57,13 @@ module "aks" {
   prefix                        = "prefix" #"${random_id.prefix.hex}"
   resource_group_name           = local.resource_group.name
   cluster_name                  = "moh-aks-cluster"
-  os_disk_size_gb               = 60
+  os_disk_size_gb               = 40
   # public_network_access_enabled = false
   sku_tier                      = "Standard"
   rbac_aad                      = false
   vnet_subnet_id                = azurerm_subnet.aks_subnet.id
-  node_pools                    = local.nodes
+  # node_pools                    = local.nodes
+  # node_count                    = 1
 
   depends_on = [
     azurerm_resource_group.main
