@@ -2,14 +2,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  annotations:
-    deimos.io/environment-development: deploy
-  name: mo
+  name: general-mo
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: mo
+  description: general-mo
   sourceRepos:
     - "*"
   destinations:
@@ -31,16 +29,16 @@ metadata:
   name: mo
   namespace: argocd
 spec:
-  project: mo
+  project: general-mo
   source:
-    repoURL: 
+    repoURL: https://github.com/walemo/Gitops.git
     targetRevision: HEAD
-    path: environments/preprod/apps
+    path: apps
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:
       prune: false
-      selfHeal: false
+      selfHeal: true
 

@@ -1,3 +1,13 @@
+data "azurerm_key_vault" "gh_secret_rg" {
+  name                = "MohWarChest" // KeyVault name
+  resource_group_name = "crossplane" // resourceGroup
+}
+
+data "azurerm_key_vault_secret" "gh_secret" {
+  name = "gh-secret" // Name of secret
+  key_vault_id = data.azurerm_key_vault.gh_secret_rg.id
+}
+
 
 data "kubectl_path_documents" "kubernetes_manifests" {
   pattern = "./argocd-manifests/templates/*.yaml"
@@ -7,10 +17,10 @@ data "kubectl_path_documents" "kubernetes_manifests" {
     # github_app_private_key_base64            = var.github_app_private_key_base64
     gitops_project_base64                    = var.gitops_project_base64
     gitops_type_base64                       = var.gitops_type_base64
-    gitops_operational_repository_url_base64 = var.gitops_operational_repository_url_base64
-    gitops_application_repository_url_base64 = var.gitops_application_repository_url_base64
-    gitops_operational_repo_url              = var.gitops_operational_repository_url
-    gitops_application_repository_url        = var.gitops_application_repository_url
+    gitops_repository_url_base64 = var.gitops_repository_url_base64
+    # gitops_application_repository_url_base64 = var.gitops_application_repository_url_base64
+    gitops_repo_url              = var.gitops_repository_url
+    # gitops_application_repository_url        = var.gitops_application_repository_url
     gitops_client                            = var.gitops_client
     gitops_application_env                   = var.gitops_application_env
     gitops_operational_env                   = var.gitops_operational_env
@@ -49,5 +59,39 @@ resource "helm_release" "argocd" {
   version          = "5.53.0"
   create_namespace = true
 
+#   values = concat(
+#     [yamlencode(local.values), yamlencode(var.values)],
+#     [for x in var.values_files : file(x)]
+#   )
+# }
 
+
+  set {
+    name  = "configs.repositories[0].url"
+    value = "https://github.com/walemo/Gitops.git"
+  }
+
+  set_sensitive {
+    name  = "configs.repositories[0].username"
+    value = "Mohzeela"
+  }
+
+  set_sensitive {
+    name  = "configs.repositories[0].password"
+    value = data.azurerm_key_vault_secret.gh_secret.value
+  }
+
+   set {
+    name  = "configs.argocd_config.kustomize.buildOptions"
+    value = "--enable-helm --enable-alpha-plugins --enable-exec"
+  }
+
+  set {
+    name  = "configs.argocd_config.statusbadge.enabled"
+    value = "true"
+  }
 }
+
+
+
+

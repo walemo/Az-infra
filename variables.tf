@@ -55,25 +55,25 @@ variable "gitops_type_base64" {
   type        = string
 }
 
-variable "gitops_operational_repository_url_base64" {
+variable "gitops_repository_url_base64" {
   description = "The GitHub operational repository URL"
   type        = string
 }
 
-variable "gitops_application_repository_url_base64" {
-  description = "The GitHub application repository URL"
-  type        = string
-}
+# variable "gitops_application_repository_url_base64" {
+#   description = "The GitHub application repository URL"
+#   type        = string
+# }
 
-variable "gitops_operational_repository_url" {
+variable "gitops_repository_url" {
   description = "The GitHub operational repository URL"
   type        = string
 }
 
-variable "gitops_application_repository_url" {
-  description = "The GitHub application repository URL"
-  type        = string
-}
+# variable "gitops_application_repository_url" {
+#   description = "The GitHub application repository URL"
+#   type        = string
+# }
 
 variable "gitops_application_env" {
   description = "The GitOps application environment name"
