@@ -68,7 +68,7 @@ resource "helm_release" "argocd" {
 
   set {
     name  = "configs.repositories[0].url"
-    value = "https://github.com/walemo/Gitops.git"
+    value = "https://github.com/walemo/Az-gitops.git"
   }
 
   set_sensitive {

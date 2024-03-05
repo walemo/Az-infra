@@ -31,7 +31,7 @@ metadata:
 spec:
   project: general-mo
   source:
-    repoURL: https://github.com/walemo/Gitops.git
+    repoURL: https://github.com/walemo/Az-gitops.git
     targetRevision: HEAD
     path: apps
   destination:
