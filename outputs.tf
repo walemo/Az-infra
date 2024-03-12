@@ -18,3 +18,7 @@ output "mi_principal_id" {
 output "mi_client_id" {
   value = azurerm_user_assigned_identity.mgd_id.client_id
 }
+
+output "kubernetes_oidc_issuer_url" {
+  value = module.aks.oidc_issuer_url
+}

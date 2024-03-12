@@ -65,6 +65,9 @@ module "aks" {
   # node_pools                    = local.nodes
   # node_count                    = 1
 
+  oidc_issuer_enabled       = true
+  workload_identity_enabled = true
+
   depends_on = [
     azurerm_resource_group.main
   ]

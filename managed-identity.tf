@@ -10,6 +10,8 @@ resource "azurerm_user_assigned_identity" "mgd_id" {
   location            = var.location
   resource_group_name = var.resource_group_name
 #   tags                = "${var.tags}"
+
+   depends_on = [module.aks, helm_release.argocd]
 }
 
 resource "azurerm_role_definition" "role_def" {
@@ -31,6 +33,8 @@ resource "azurerm_role_assignment" "role_asn" {
   scope              = data.azurerm_subscription.current.id
   role_definition_id = azurerm_role_definition.role_def.role_definition_resource_id
   principal_id       = azurerm_user_assigned_identity.mgd_id.principal_id
+
+  depends_on = [module.aks, helm_release.argocd]
 }
 
 resource "azurerm_key_vault_access_policy" "kv_policy" {
@@ -43,6 +47,6 @@ resource "azurerm_key_vault_access_policy" "kv_policy" {
   ]
 
   secret_permissions = [
-    "Get", "List"
+    "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore"
   ]
 }
