@@ -40,3 +40,23 @@ resource "azurerm_key_vault_access_policy" "wi_kv_policy" {
     "Get", "List", "Set", "Delete", "Recover", "Backup", "Restore"
   ]
 }
+
+resource "kubernetes_service_account" "workload-identity-sa" {
+  metadata {
+    name = local.service_account_name
+    namespace = local.namespace
+    annotations = {
+        "azure.workload.identity/client-id" = azurerm_user_assigned_identity.for_wi.client_id
+        "azure.workload.identity/tenant-id" = data.azurerm_subscription.current.tenant_id
+
+    }
+  }
+}
+
+
+resource "kubernetes_namespace" "crossplane-system" {
+  metadata {
+    name = local.namespace
+  }
+}
+

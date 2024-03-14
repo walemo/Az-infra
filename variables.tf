@@ -8,6 +8,11 @@ variable "location" {
   default = "canadacentral"
 }
 
+variable "tenant_id" {
+  default = null
+  type    = string
+}
+
 variable "resource_group_name" {
   type    = string
   default = null
