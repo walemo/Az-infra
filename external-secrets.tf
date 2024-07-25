@@ -1,6 +1,6 @@
 resource "helm_release" "kubernetes_external_secrets" {
 
-  name = "external-secrets"
+  name             = "external-secrets"
   repository       = "https://charts.external-secrets.io"
   chart            = "external-secrets"
   version          = "0.9.8"
@@ -27,5 +27,7 @@ resource "helm_release" "kubernetes_external_secrets" {
     value = "info"
   }
 
+
+depends_on = [module.aks]
 
 }

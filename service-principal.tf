@@ -1,8 +1,8 @@
 data "azuread_application_published_app_ids" "well_known" {}
 
 resource "azuread_service_principal" "msgraph" {
-  client_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
-  use_existing   = true
+  client_id    = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
+  use_existing = true
 }
 
 
@@ -10,7 +10,7 @@ resource "azuread_service_principal" "msgraph" {
 resource "azuread_application" "external_secret-operator" {
   display_name = "External secret operator"
 
-   required_resource_access {
+  required_resource_access {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
     resource_access {
@@ -59,7 +59,7 @@ resource "azuread_service_principal_password" "external_secret_pass" {
 resource "kubernetes_secret" "azure_sp_secret" {
   metadata {
     name      = "azure-secret-sp"
-    namespace = "crossplane-system"  # Specify the appropriate namespace
+    namespace = "crossplane-system" # Specify the appropriate namespace
   }
 
   data = {

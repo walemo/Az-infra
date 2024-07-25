@@ -1,7 +1,7 @@
 data "azurerm_subscription" "current" {}
 
 data "azurerm_key_vault" "mohkeyv" {
-  name                = "mohkeyv" // KeyVault name
+  name                = "mohkeyv"    // KeyVault name
   resource_group_name = "crossplane" // resourceGroup
 }
 
@@ -9,9 +9,9 @@ resource "azurerm_user_assigned_identity" "mgd_id" {
   name                = "crossplane-mi"
   location            = var.location
   resource_group_name = var.resource_group_name
-#   tags                = "${var.tags}"
+  #   tags                = "${var.tags}"
 
-   depends_on = [module.aks, helm_release.argocd]
+  depends_on = [module.aks, helm_release.argocd]
 }
 
 resource "azurerm_role_definition" "role_def" {

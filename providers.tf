@@ -9,7 +9,7 @@ terraform {
       source  = "hashicorp/random"
       version = "3.3.2"
     }
-     helm = {
+    helm = {
       source  = "hashicorp/helm"
       version = "~> 2.7"
     }
@@ -31,7 +31,7 @@ provider "azurerm" {
       prevent_deletion_if_contains_resources = false
     }
   }
-  use_oidc = true
+  use_oidc        = true
   subscription_id = "32eb20d3-efa4-4a51-a2ff-32721933e3dd"
 }
 
