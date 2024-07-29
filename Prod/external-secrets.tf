@@ -28,6 +28,6 @@ resource "helm_release" "kubernetes_external_secrets" {
   }
 
 
-depends_on = [module.aks]
+  depends_on = [module.aks]
 
 }

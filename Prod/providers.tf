@@ -22,7 +22,7 @@ terraform {
 
 provider "kubernetes" {
   config_path    = "~/.kube/config"
-  config_context = "moh-aks-cluster"
+  # config_context = "moh-aks-cluster"
 }
 
 provider "azurerm" {
@@ -44,6 +44,7 @@ provider "helm" {
     client_key             = base64decode(module.aks.client_key)
     cluster_ca_certificate = base64decode(module.aks.cluster_ca_certificate)
   }
+
 }
 
 

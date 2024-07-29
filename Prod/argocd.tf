@@ -10,7 +10,7 @@ data "azurerm_key_vault_secret" "gh_secret" {
 
 
 data "kubectl_path_documents" "kubernetes_manifests" {
-  pattern = "./argocd-manifests/templates/*.yaml"
+  pattern = "../argocd-manifests/templates/*.yaml"
   vars = {
     # github_app_id_base64                     = var.github_app_id_base64
     # github_app_installation_id_base64        = var.github_app_installation_id_base64
@@ -90,6 +90,8 @@ resource "helm_release" "argocd" {
     name  = "configs.argocd_config.statusbadge.enabled"
     value = "true"
   }
+
+  depends_on = [module.aks]
 }
 
 
